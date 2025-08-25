@@ -2,12 +2,13 @@ class CommentsController < ApplicationController
 
   def create
     @prototype = Prototype.find(params[:prototype_id])
-    comment = @prototype.comments.new(comment_params)
-    if comment.save
+    @comment = @prototype.comments.new(comment_params)
+    if @comment.save
       redirect_to prototype_path(@prototype)
     else
       @comments = @prototype.comments.includes(:user)
-      render :show, status: :unprocessable_entity
+      # 詳細ページのビューに必要な変数を設定
+      render 'prototypes/show', status: :unprocessable_entity
     end
     
   end
